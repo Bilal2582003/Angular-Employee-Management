@@ -1,0 +1,109 @@
+<div class="row main">
+    <div class="col-sm-12 col-md-12 col-lg-7 ">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-6">
+                        <strong>Employee Portal</strong>
+                    </div>
+                    <div class="col-6 text-end">
+                        <button class="btn btn-warning">Add New</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Department</th>
+                                <th>Role</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-12 col-lg-5 ">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-6">
+                        <strong>New Employee</strong>
+                    </div>
+                    <div class="col-6 text-end">
+                        <button class="btn btn-primary">Close</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <form action="" class="mb-4">
+                    <div class="danger" *ngIf="vars.general"><span >{{vars.general}}</span></div>
+                    <div class="success" *ngIf="vars.success"><span >{{vars.success}}</span></div>
+                    <div class="row m-2">
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                            <label for="employeeName" class="form-label">Name</label><br>
+                            <input type="text" [(ngModel)]="employee.name" name="name" id="employeeName"
+                                class="form-control" [ngClass]="{'invalid': vars.name}" placeholder="Enter Employee Name" >
+                                <div *ngIf="vars.name" class="dangerSms"><span>{{vars.name}}</span></div>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                            <label for="employeeEmail" class="form-label">Email</label><br>
+                            <input type="text" [(ngModel)]="employee.email" name="email" id="employeeEmail"
+                            class="form-control" [ngClass]="{'invalid': vars.email}" placeholder="Enter Employee Email" >
+                            <div *ngIf="vars.email" class="dangerSms"><span>{{vars.email}}</span></div>
+                        </div>
+                    </div>
+                    <div class="row  m-2">
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                            <label for="employeePassword" class="form-label"> Password </label><br>
+                            <input type="text" [(ngModel)]="employee.password" name="password" id="employeePassword"
+                            class="form-control" [ngClass]="{'invalid': vars.password}" placeholder="Password***" >
+                            <div *ngIf="vars.password" class="dangerSms"><span>{{vars.password}}</span></div>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                            <label for="employeeDepartment" class="form-label">Department</label><br>
+                            <select id="employeeDepartment" class="form-control" [ngClass]="{'invalid': vars.department}" [(ngModel)]="employee.depart_id"
+                                name="department" >
+                                <option value="">Select Department </option>
+                                <ng-container *ngIf="vars.departmentData.length > 0; else noDepartments">
+                                    <option *ngFor="let category of vars.departmentData;"
+                                        [value]="category.id">
+                                        {{ category.name }}
+                                    </option>
+                                </ng-container>
+                                <ng-template #noDepartments>
+                                    <option disabled>No departments available</option>
+                                </ng-template>
+                            </select>
+                            <div *ngIf="vars.department" class="dangerSms"><span>{{vars.department}}</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="row m-2">
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                            <label for="employeeRole" class="form-label"> Role </label><br>
+                            <input type="text" [(ngModel)]="employee.role" name="role" id="employeeRole"
+                                class="form-control" [ngClass]="{'invalid': vars.role}" placeholder="Enter Employee Role" >
+                                <div *ngIf="vars.role" class="dangerSms"><span>{{vars.role}}</span></div>
+                        </div>
+                    </div>
+                    <div class="row m-2">
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                            <button type="button" class="themeBtn" (click)="onSubmit()">{{vars.submit!}}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+@import './styles/custom.css';
+body{
+    font-family: Garamond  ;
+    letter-spacing: .15rem;
+    background: linear-gradient(to bottom, var(--lightgray), var(--lightpurple));
+    background-repeat: no-repeat;
+    height: 100vh;
+}
+.themeBtn{
+    background-color: var(--lightgray);
+    color: var(--blue);
+    padding: 3px 10px;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+}
+.themeBtn:hover{
+     background-color: var(--blue);
+     color: white;
+     transition: ease-in 0.2s;
+}

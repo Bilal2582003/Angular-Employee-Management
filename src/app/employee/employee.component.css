@@ -1,0 +1,39 @@
+ .card-header{
+    background:  var(--lightblue);
+}
+.card-body{
+     background: linear-gradient(to bottom, var(--lightgray), var(--lightpurple));
+}
+.danger{
+     color:red;
+     text-align: center;
+     margin: auto;
+     font-weight: bold;
+     font-size: small;
+     background-color:white;
+     color:red;
+     border-radius: 8px;
+     max-width: 70%;
+     min-width: min-content;
+}
+.dangerSms{
+color:red;
+     text-align: center;
+     margin: auto;
+     font-weight: bold;
+     font-size: small;
+}
+.invalid{
+     border: 1px solid red;
+}
+.success{
+     text-align: center;
+     margin: auto;
+     font-weight: bold;
+     font-size: small;
+     background-color:white;
+     color:green;
+     border-radius: 8px;
+     max-width: 70%;
+     min-width: min-content;
+}
