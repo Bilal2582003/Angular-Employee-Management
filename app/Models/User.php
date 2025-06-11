@@ -48,6 +48,6 @@ class User extends Authenticatable
     }
 
     public function departs(){
-         return $this->belongsToMany(Depart::class, 'map_user_depart', 'user_id', 'depart_id');
+         return $this->belongsToMany(Depart::class, 'map_user_depart', 'user_id', 'depart_id')->withPivot('role');
     }
 }

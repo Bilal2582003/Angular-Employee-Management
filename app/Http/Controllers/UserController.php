@@ -113,4 +113,61 @@ class UserController extends Controller
             ], 500);
         }
     }
+
+
+    public function getUser($id = null)
+    {
+        try {
+            $query = User::with("departs");
+
+            if ($id) {
+                $user = $query->find($id);
+                $data = $user ? [$user] : []; // Avoiding redundant find() calls
+            } else {
+                $data = $query->get();
+            }
+
+            return response()->json([
+                "success" => count($data) > 0 ? 200 : 400,
+                "message" => count($data) > 0 ? "Data found." : "Data not found.",
+                "data" => $data,
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                "status" => 500,
+                "message" => "An error occurred, please try again later!",
+                "data" => []
+            ], 500);
+        }
+    }
+    public function deletetUser($id)
+    {
+        try {   
+            $query = User::find($id);
+            if (!$query) {
+                return response()->json([
+                    "success" => 400,
+                    "message" => "Data not found.",
+                    "data" => [],
+                ]);
+            }
+            $query->delete();
+
+            return response()->json([
+                "success" => 200,
+                "message" => "Deleted successfully",
+                "data" => [],
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                "status" => 500,
+                "message" => "An error occurred, please try again later!",
+                "data" => []
+            ], 500);
+        }
+    }
+
+
+
+
 }
