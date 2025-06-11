@@ -20,7 +20,8 @@ export class EmployeeComponent implements OnInit {
     department: '',// for department error in add employee
     role: '',// for role error in add employee
     submit: 'Submit',// text change Loading or Submit according to Actions
-    success: '' // for success sms
+    success: '', // for success sms
+    tableList: []
   };
 
   //  it is for post. 2 way binding with add new employee form
@@ -54,12 +55,12 @@ export class EmployeeComponent implements OnInit {
         }
       }
     });
-
+    this.employeeList()
 
   }
 
   // show success sms here 
-  showTemporaryMessageSuccess(success:any) {
+  showTemporaryMessageSuccess(success: any) {
     this.vars.success = success;
 
     setTimeout(() => {
@@ -67,20 +68,36 @@ export class EmployeeComponent implements OnInit {
     }, 6000);
   }
   // show error sms here
-  showTemporaryMessageGeneralError(error:any) {
+  showTemporaryMessageGeneralError(error: any) {
     this.vars.general = error
     setTimeout(() => {
       this.vars.general = "";
     }, 6000);
   }
 
-// Fetch employee table
-  
+  // Fetch employee table
+  employeeList(id?: any) {
+    this.departService.getEmployeeList(id).subscribe((res: any) => {
+      this.vars.tableList = res.success === 200 ? res.data : [];
+    })
+  }
+
+
+  deleteEmployee(id:any){
+    var result = confirm("Are you sure?");
+    if(result){
+      this.departService.deleteEmployee(id).subscribe((res:any)=>{
+        res.status == 200 ? alert(res.message) : alert(res.message)
+      })
+    }
+    this.employeeList();
+  }
 
 
   // for submit new employee from  
   onSubmit() {
     this.vars.submit = "Loading"
+    console.log(this.employee)
     this.departService.saveEmployee(this.employee).subscribe({
       next: (res: any) => {
         console.log(res)
@@ -99,7 +116,7 @@ export class EmployeeComponent implements OnInit {
         this.employee.role = "";
 
         this.showTemporaryMessageSuccess("User Successfully added.");
-
+        this.employeeList();
       },
       error: (err) => {
         if (err.status == 400) {
@@ -115,8 +132,8 @@ export class EmployeeComponent implements OnInit {
             this.vars.department = error.depart_id ? error.depart_id[0].replace("id", "") : "";
             this.vars.role = error.role ? error.role[0] : "";
           }
-        }else if(err.status == 500){
-          console.log("this"+JSON.stringify(err))
+        } else if (err.status == 500) {
+          console.log("this" + JSON.stringify(err))
           this.showTemporaryMessageGeneralError(err.error.message)
         }
         this.vars.submit = "Submit"

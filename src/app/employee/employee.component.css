@@ -37,3 +37,41 @@ color:red;
      max-width: 70%;
      min-width: min-content;
 }
+.cross{
+     color: black;
+     font-size: medium;
+     font-weight: bolder;
+     border: none;
+     border-radius: 3px;
+     background-color: white;
+     border: .1px solid gray;
+}
+.cross:hover{
+     border: 1px solid red;
+     color: red;
+     background-color: whtie;
+     transition: .2s ease-in;
+}
+div:has(> .cross){
+display: flex;
+justify-content: center;
+}
+table > thead > tr, th{
+      background: linear-gradient( var(--blue));
+      color: white;
+}
+
+td {
+    background-color: transparent; /* More reliable than unset */
+}
+table > thead > tr:nth-child(even),
+table > tbody > tr:nth-child(even) {
+    background:  var(--lightpurple);
+    border: none;
+    outline: none;
+    
+    border-radius: 3px;
+}
+.table > :not(caption) > * > * {
+     border-bottom-width: 0px;
+}

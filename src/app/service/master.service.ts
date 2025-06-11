@@ -30,9 +30,18 @@ export class MasterService {
     return this.http.post(this.env.apiUrl + '/register', data, { headers });
   }
 
-  getEmployeeList(){
+  getEmployeeList(id?:any){
+    var url = this.env.apiUrl+"/employee-list"; 
+
+    url += id ? "/"+id : '';
+    console.log(url)
     const headers = this.getToken();
-    return this.http.get(this.env.apiUrl+"/getEmployee", {headers});
+    return this.http.get(url, {headers});
+  }
+
+  deleteEmployee(id:any){
+    const headers = this.getToken();
+    return this.http.get(this.env.apiUrl+`/employee-list/delete/${id}`, {headers});
   }
 
 
