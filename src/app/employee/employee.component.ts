@@ -1,7 +1,8 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MasterService } from '../service/master.service';
 import { FormsModule } from '@angular/forms'; // <-- Import this
 import { NgClass, NgFor, NgIf } from '@angular/common';
+import { single } from 'rxjs';
 
 @Component({
   selector: 'app-employee',
@@ -20,12 +21,14 @@ export class EmployeeComponent implements OnInit {
     department: '',// for department error in add employee
     role: '',// for role error in add employee
     submit: 'Submit',// text change Loading or Submit according to Actions
+    update: 'Update',
     success: '', // for success sms
     tableList: []
   };
 
   //  it is for post. 2 way binding with add new employee form
   employee: any = {
+    id: '',
     name: '',
     email: '',
     password: '',
@@ -33,7 +36,13 @@ export class EmployeeComponent implements OnInit {
     role: ''
   };
 
-
+ isAddModalSingal = signal<boolean>(false);
+ openModal(){
+  this.isAddModalSingal.set(true);
+}
+closeModal(){
+  this.isAddModalSingal.set(false);
+ }
 
   departService = inject(MasterService); // it is shortest way instead of constructor
 
@@ -83,16 +92,73 @@ export class EmployeeComponent implements OnInit {
   }
 
 
-  deleteEmployee(id:any){
+  deleteEmployee(id: any) {
     var result = confirm("Are you sure?");
-    if(result){
-      this.departService.deleteEmployee(id).subscribe((res:any)=>{
+    if (result) {
+      this.departService.deleteEmployee(id).subscribe((res: any) => {
         res.status == 200 ? alert(res.message) : alert(res.message)
       })
     }
     this.employeeList();
   }
 
+  editEmployee(obj: any, depart?: any) {
+    // console.log(obj)
+    this.employee.id = obj.id;
+    this.employee.name = obj.name;
+    this.employee.email = obj.email;
+    this.employee.password = obj.password;
+    this.employee.depart_id = depart.id ? depart.id : '';
+    this.employee.role = depart.pivot.role ? depart.pivot.role : '';
+
+    // console.log(this.employee)
+  }
+
+  onUpate() {
+    this.vars.update = "Loading"
+    this.departService.editEmployee(this.employee).subscribe({
+      next: (res: any) => {
+        console.log(res)
+        this.vars.general = '';
+        this.vars.name = "";
+        this.vars.email = "";
+        this.vars.password = "";
+        this.vars.department = "";
+        this.vars.update = "Submit"
+        this.vars.role = "";
+
+        this.employee.name = "";
+        this.employee.email = "";
+        this.employee.password = "";
+        this.employee.depart_id = "";
+        this.employee.role = "";
+
+        this.showTemporaryMessageSuccess("User Successfully Edit.");
+        this.employeeList();
+      },
+      error: (err) => {
+        console.log(err)
+        if (err.status == 400) {
+          if (!Array.isArray(err.error.message) && typeof err.error.message != "object")// checking not to object and array
+          {
+            this.showTemporaryMessageGeneralError(err.error.message)
+          }
+          else {
+            let error = err.error.message;
+            this.vars.name = error.name ? error.name[0] : "";
+            this.vars.email = error.email ? error.email[0] : "";
+            this.vars.password = error.password ? error.password[0] : "";
+            this.vars.department = error.depart_id ? error.depart_id[0].replace("id", "") : "";
+            this.vars.role = error.role ? error.role[0] : "";
+          }
+        } else if (err.status == 500) {
+          console.log("this" + JSON.stringify(err))
+          this.showTemporaryMessageGeneralError(err.error.message)
+        }
+        this.vars.update = "Update"
+      }
+    })
+  }
 
   // for submit new employee from  
   onSubmit() {

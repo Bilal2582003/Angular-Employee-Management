@@ -37,7 +37,7 @@ color:red;
      max-width: 70%;
      min-width: min-content;
 }
-.cross{
+.cross, .edit{
      color: black;
      font-size: medium;
      font-weight: bolder;
@@ -49,6 +49,12 @@ color:red;
 .cross:hover{
      border: 1px solid red;
      color: red;
+     background-color: whtie;
+     transition: .2s ease-in;
+}
+.edit:hover{
+     border: 1px solid gold;
+     color: gold;
      background-color: whtie;
      transition: .2s ease-in;
 }

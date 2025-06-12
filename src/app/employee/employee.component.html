@@ -1,6 +1,6 @@
 
 <div class="row main">
-    <div class="col-sm-12 col-md-12 col-lg-7 ">
+    <div [class]=" isAddModalSingal() ? 'col-sm-12 col-md-12 col-lg-7' : 'col-sm-12 col-md-12 col-lg-10 mx-auto' ">
         <div class="card">
             <div class="card-header">
                 <div class="row">
@@ -8,7 +8,7 @@
                         <strong>Employee Portal</strong>
                     </div>
                     <div class="col-6 text-end">
-                        <button class="btn btn-warning">Add New</button>
+                        <button class="btn btn-warning" (click)="openModal()">Add New</button>
                     </div>
                 </div>
             </div>
@@ -37,7 +37,10 @@
                                 <td>{{ item.email }}</td>
                                 <td>{{ depart.name }}</td>
                                 <td>{{ depart.pivot.role }}</td>
-                                <td><button class="cross" (click)="deleteEmployee(item.id)">x</button></td>
+                                <td>
+                                    <button class="cross m-1" (click)="deleteEmployee(item.id)">x</button>
+                                    <button class="edit" (click)="editEmployee(item,depart)">✎</button>
+                                </td>
                             </tr>
                             }
                             } @else{
@@ -48,7 +51,8 @@
                                 <td colspan="2">No department assigned</td>
                                 <td>
                                     <div>
-                                        <button class="cross" (click)="deleteEmployee(item.id)">x</button>
+                                        <button class="cross m-1" (click)="deleteEmployee(item.id)">x</button>
+                                        <button class="edit" (click)="editEmployee(item, [])">✎</button>
                                     </div>
                                 </td>
                             </tr>
@@ -60,7 +64,8 @@
             </div>
         </div>
     </div>
-
+@if(isAddModalSingal()){
+    
     <div class="col-sm-12 col-md-12 col-lg-5 ">
         <div class="card">
             <div class="card-header">
@@ -69,7 +74,7 @@
                         <strong>New Employee</strong>
                     </div>
                     <div class="col-6 text-end">
-                        <button class="btn btn-primary">Close</button>
+                        <button class="btn btn-primary" (click)="closeModal()">Close</button>
                     </div>
                 </div>
             </div>
@@ -130,7 +135,11 @@
                     </div>
                     <div class="row m-2">
                         <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
-                            <button type="button" class="themeBtn" (click)="onSubmit()">{{vars.submit!}}</button>
+                            @if(employee.id == ''){
+                                <button type="button" class="themeBtn" (click)="onSubmit()" >{{vars.submit!}}</button>
+                            }@else{
+                                <button type="button" class="themeBtn" (click)="onUpate()" >{{vars.update!}}</button>
+                            }
                         </div>
                     </div>
                 </form>
@@ -139,4 +148,5 @@
 
         </div>
     </div>
+}
 </div>

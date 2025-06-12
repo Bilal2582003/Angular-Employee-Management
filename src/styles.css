@@ -1,6 +1,7 @@
 @import './styles/custom.css';
 body{
     font-family: Garamond  ;
+    font-size: large;
     letter-spacing: .15rem;
     background: linear-gradient(to bottom, var(--lightgray), var(--lightpurple));
     background-repeat: no-repeat;

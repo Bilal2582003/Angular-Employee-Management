@@ -10,7 +10,7 @@ export class MasterService {
   constructor(private http: HttpClient) { }
   env = environment;
 
-  getToken(){
+  getToken() {
     const token = JSON.parse(localStorage.getItem("token") || 'null');
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
@@ -30,19 +30,35 @@ export class MasterService {
     return this.http.post(this.env.apiUrl + '/register', data, { headers });
   }
 
-  getEmployeeList(id?:any){
-    var url = this.env.apiUrl+"/employee-list"; 
+  getEmployeeList(id?: any) {
+    var url = this.env.apiUrl + "/employee-list";
 
-    url += id ? "/"+id : '';
+    url += id ? "/" + id : '';
     console.log(url)
     const headers = this.getToken();
-    return this.http.get(url, {headers});
+    return this.http.get(url, { headers });
   }
 
-  deleteEmployee(id:any){
+  deleteEmployee(id: any) {
     const headers = this.getToken();
-    return this.http.get(this.env.apiUrl+`/employee-list/delete/${id}`, {headers});
+    return this.http.get(this.env.apiUrl + `/employee-list/delete/${id}`, { headers });
   }
 
+  editEmployee(data: { id?: string, name: string, email: string, password?: string, department?: string, role?: string }) {
+    const headers = this.getToken();
 
+    return this.http.post(this.env.apiUrl + '/updateEmployee', data, { headers });
+  }
+
+  createProject(data: { id?: number, name: string, client: string, startDate: string, employeeLead: number, contactPerson: string, contactNo: string }) {
+    const headers = this.getToken();
+
+    return this.http.post(this.env.apiUrl + '/createProject', data, { headers });
+  }
+
+  getProject(){
+    const headers = this.getToken();
+
+    return this.http.get(this.env.apiUrl + '/projectList', { headers });
+  }
 }

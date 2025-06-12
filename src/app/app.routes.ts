@@ -3,6 +3,7 @@ import { LoginComponent } from './login/login.component';
 import { LayoutComponent } from './layout/layout.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EmployeeComponent } from './employee/employee.component';
+import { ProjectComponent } from './project/project.component';
 
 export const routes: Routes = [
  {
@@ -25,7 +26,11 @@ export const routes: Routes = [
         {
             path:"employee",
             component: EmployeeComponent
-        }
+        },
+        {
+            path:"project",
+            component: ProjectComponent
+        },
     ]
  },
 
