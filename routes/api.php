@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,5 +22,8 @@ Route::prefix("EmpoyeeManagemet")->group(function () {
     Route::post("register", [UserController::class, "register"])->middleware("auth:sanctum");
     Route::get("employee-list/{id?}", [UserController::class, "getUser"])->middleware(["auth:sanctum"]);
     Route::get("employee-list/delete/{id}", [UserController::class, "deletetUser"])->middleware(["auth:sanctum"]);
+    Route::post("updateEmployee", [UserController::class, "updateUser"])->middleware(["auth:sanctum"]);
+    Route::post("createProject", [ProjectController::class, "AddProject"])->middleware(["auth:sanctum"]);
+    Route::post("project-list", [ProjectController::class, "projectList"])->middleware(["auth:sanctum"]);
     Route::post("login", [UserController::class, "login"])->name("login");
 });

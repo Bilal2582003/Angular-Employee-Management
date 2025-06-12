@@ -142,7 +142,7 @@ class UserController extends Controller
     }
     public function deletetUser($id)
     {
-        try {   
+        try {
             $query = User::find($id);
             if (!$query) {
                 return response()->json([
@@ -163,6 +163,80 @@ class UserController extends Controller
                 "status" => 500,
                 "message" => "An error occurred, please try again later!",
                 "data" => []
+            ], 500);
+        }
+    }
+
+    public function updateUser(Request $req)
+    {
+        try {
+            $validate = Validator::make($req->all(), [
+                "id" => 'required',
+                "name" => "required|string",
+                "email" => "required|email",
+                "role" => "required|string",
+                "depart_id" => "required|integer"
+            ]);
+            if ($validate->fails()) {
+                return response()->json(["status" => 400, "message" => $validate->errors()], 400);
+            }
+
+            // Find the user by ID
+            $user = User::find($req->id);
+            if (!$user) {
+                return response()->json(["status" => 404, "message" => "User not found"], 404);
+            }
+
+            // Check if email already exists for another user
+            $emailExists = User::where("email", $req->email)->where("id", '!=', $req->id)->first();
+            if ($emailExists) {
+                return response()->json(["status" => 400, "message" => "Email already taken by another user."], 400);
+            }
+
+            // Update user fields
+            $user->name = $req->name;
+            $user->email = $req->email;
+
+            // Update password only if it's provided
+            if (!empty($req->password)) {
+                $user->password = Hash::make($req->password);
+            }
+
+            $user->save();
+
+            // Check for existing user-department mapping
+            $existingMapping = Map_User_Depart::where([
+                'user_id' => $user->id,
+                'depart_id' => $req->depart_id
+            ])->first();
+
+            if (!$existingMapping) {
+                // Create mapping if not exists
+                $map_user_depart = new Map_User_Depart();
+                $map_user_depart->user_id = $user->id;
+                $map_user_depart->depart_id = $req->depart_id;
+                $map_user_depart->role = $req->role;
+                $map_user_depart->save();
+            } else {
+                // Optionally update role if needed
+                $existingMapping->role = $req->role;
+                $existingMapping->save();
+            }
+
+            // Load user with departments
+            $data = User::with("departs")->find($user->id);
+
+            return response()->json([
+                "status" => 200,
+                "message" => "User updated successfully",
+                "data" => $data
+            ], 200);
+
+        }
+        catch (Exception $e) {
+            return response()->json([
+                "status" => 500,
+                "message" => "An error occurred, please try again later!"
             ], 500);
         }
     }

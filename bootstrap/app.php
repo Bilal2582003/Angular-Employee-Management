@@ -19,7 +19,9 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->validateCsrfTokens(except: [
         'api/EmpoyeeManagemet/login',
-        'api/EmpoyeeManagemet/register'
+        'api/EmpoyeeManagemet/register',
+        'api/EmpoyeeManagemet/updateEmployee',
+        'api/EmpoyeeManagemet/createProject',
     ]); 
     })
     ->withExceptions(function (Exceptions $exceptions) {
