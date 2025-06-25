@@ -24,6 +24,8 @@ Route::prefix("EmpoyeeManagemet")->group(function () {
     Route::get("employee-list/delete/{id}", [UserController::class, "deletetUser"])->middleware(["auth:sanctum"]);
     Route::post("updateEmployee", [UserController::class, "updateUser"])->middleware(["auth:sanctum"]);
     Route::post("createProject", [ProjectController::class, "AddProject"])->middleware(["auth:sanctum"]);
-    Route::post("project-list", [ProjectController::class, "projectList"])->middleware(["auth:sanctum"]);
+    Route::get("projectList", [ProjectController::class, "projectList"])->middleware(["auth:sanctum"]);
+    Route::post("updateProject", [ProjectController::class, "updateProject"])->middleware(["auth:sanctum"]);
+    Route::get("deleteProject/{id}", [ProjectController::class, "deleteProject"])->middleware(["auth:sanctum"]);
     Route::post("login", [UserController::class, "login"])->name("login");
 });

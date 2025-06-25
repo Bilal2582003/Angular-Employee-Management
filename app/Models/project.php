@@ -9,7 +9,7 @@ class project extends Model
     protected $table = "project";
    public function users()
     {
-        return $this->hasMany(User::class, 'employeeLeadId', 'id');
+        return $this->hasMany(User::class, 'id', 'employeeLeadId');
     }
 
 }
