@@ -55,6 +55,15 @@ export class MasterService {
 
     return this.http.post(this.env.apiUrl + '/createProject', data, { headers });
   }
+  updateProject(data: { id?: number, name: string, client: string, startDate: string, employeeLead: number, contactPerson: string, contactNo: string }) {
+    const headers = this.getToken();
+
+    return this.http.post(this.env.apiUrl + '/updateProject', data, { headers });
+  }
+  deleteproject(id:any){
+    const headers = this.getToken();
+     return this.http.get(this.env.apiUrl + `/deleteProject/${id}`, { headers });
+  }
 
   getProject(){
     const headers = this.getToken();

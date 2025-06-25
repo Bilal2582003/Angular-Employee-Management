@@ -1,15 +1,16 @@
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { CommonModule, NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MasterService } from '../service/master.service';
+import { Router } from 'express';
 
 @Component({
   selector: 'app-project',
-  imports: [NgIf, ReactiveFormsModule, NgFor],
+  imports: [NgIf, ReactiveFormsModule, NgFor, CommonModule],
   templateUrl: './project.component.html',
   styleUrl: './project.component.css'
 })
-export class ProjectComponent  implements OnInit {
+export class ProjectComponent implements OnInit {
   vars: any = {
     general: '', // for general errors
     employeeData: [], // for show department list in html
@@ -21,11 +22,12 @@ export class ProjectComponent  implements OnInit {
     projectClient: '',
     projectStartDate: '',
     projectContactPerson: '',
-    projectContactNo: ''
+    projectContactNo: '',
+    projectList: [],
+    projectId: 0
   };
 
   masterService = inject(MasterService);
-
   isAddModalSingal = signal<boolean>(false);
   openModal() {
     this.isAddModalSingal.set(true);
@@ -68,9 +70,13 @@ export class ProjectComponent  implements OnInit {
     this.vars.submit = "Loading"
     const formValue = this.projectForm.value;
     console.log(formValue)
-    this.masterService.createProject(formValue).subscribe({
+
+    // ======== Run condition base Service for INSERT & UPDATE ======== 
+    var functionName = this.vars.projectId == 0 ? this.masterService.createProject(formValue) : this.masterService.updateProject(formValue)
+    functionName.subscribe({
       next: (res: any) => {
         console.log(res)
+        this.vars.projectId = 0
         this.vars.projectName = ""
         this.vars.projectClient = ""
         this.vars.projectStartDate = ""
@@ -79,6 +85,8 @@ export class ProjectComponent  implements OnInit {
         this.vars.projectContactNo = ""
         this.vars.submit = "Submit"
         this.showTemporaryMessageSuccess(res.message)
+        this.getProjectData();
+        this.projectForm.reset(); // Clear form
       },
       error: (err) => {
         console.log(err)
@@ -102,17 +110,50 @@ export class ProjectComponent  implements OnInit {
         }
         this.vars.submit = "Submit"
       }
-      
+
 
     })
   }
 
-  getProjectData(){
-    this.masterService.getProject().subscribe(res=>{
+  getProjectData() {
+    this.masterService.getProject().subscribe((res: any) => {
       console.log(res);
+      if (res.success == 200) {
+        this.vars.projectList = res.data;
+      } else {
+        this.showTemporaryMessageGeneralError(res.message);
+      }
     })
   }
 
+  onEdit(id: any) {
+    this.openModal();
+    const match = this.vars.projectList.find((item: any) => item.id === id);
+    console.log(match);
+    this.vars.submit = "Update";
+    this.vars.projectId = id;
+    this.projectForm = new FormGroup({
+      projectId: new FormControl(id),
+      projectName: new FormControl(match.name),
+      projectClient: new FormControl(match.client),
+      projectStartDate: new FormControl(match.startDate),
+      projectEmployeeLead: new FormControl(match.employeeLeadId),
+      projectContactPerson: new FormControl(match.contactPerson),
+      projectContactNo: new FormControl(match.contactNo),
+    })
+  }
+  onDelete(id: any) {
+    var api = this.masterService.deleteproject(id).subscribe({
+      next: (res: any) => {
+        alert(res.message)
+        this.getProjectData();
+      },
+      error: (e) => {
+        alert(e.error.message)
+      }
+    })
+
+  }
 
 
   // show success sms here 

@@ -1,4 +1,3 @@
-
 <div class="row main">
     <div class=" col-sm-12 col-md-12 col-lg-10 mx-auto " *ngIf="!isAddModalSingal()">
         <div class="card">
@@ -24,11 +23,26 @@
                                 <th>Employee Lead</th>
                                 <th>Contact Person </th>
                                 <th>Contact# </th>
+                                <th>StartDate </th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                           
+                            <tr *ngFor="let item of vars.projectList">
+                                <td>{{ item.id }}</td>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.client }}</td>
+                                <td>{{ item.users[0].name || "No record" }} <span class="user_id d-none">{{  item.users[0].id || ''  }}</span></td>
+                                <td>{{ item.contactPerson }}</td>
+                                <td>{{ item.contactNo }}</td>
+                                <td>{{ item.startDate | date:'dd-MM-yy' }}</td>
+                                <td>
+                                    <div>
+                                        <button class="cross m-1" (click)="onDelete(item.id)">x</button>
+                                        <button class="edit" (click)="onEdit(item.id)">✎</button>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -49,36 +63,35 @@
                 </div>
             </div>
             <div class="card-body">
-                <form class="mb-4"  [formGroup]="projectForm" (ngSubmit)="saveProject()">
+                <form class="mb-4" [formGroup]="projectForm" (ngSubmit)="saveProject()">
                     <div class="danger" *ngIf="vars.general"><span>{{vars.general}}</span></div>
                     <div class="success" *ngIf="vars.success"><span>{{vars.success}}</span></div>
                     <div class="row m-2">
+                        <span class="d-none">{{vars.projectId}}</span>
                         <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
                             <label for="projectName" class="form-label">Name</label><br>
-                            <input type="text" formControlName="projectName" id="projectName"
-                                class="form-control"
+                            <input type="text" formControlName="projectName" id="projectName" class="form-control"
                                 placeholder="Enter project Name">
                             <div *ngIf="vars.projectName" class="dangerSms"><span>{{vars.projectName}}</span></div>
                         </div>
                         <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
                             <label for="projectclientName" class="form-label">Client Name</label><br>
                             <input type="text" formControlName="projectClient" id="projectClientName"
-                                class="form-control"
-                                placeholder="Enter Employee clientName">
+                                class="form-control" placeholder="Enter Employee clientName">
                             <div *ngIf="vars.projectClient" class="dangerSms"><span>{{vars.projectClient}}</span></div>
                         </div>
                     </div>
                     <div class="row  m-2">
                         <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
                             <label for="startDate" class="form-label"> Start Date </label><br>
-                            <input type="date" formControlName="projectStartDate" id="startDate"
-                                class="form-control" placeholder="startDate***">
-                            <div *ngIf="vars.projectStartDate" class="dangerSms"><span>{{vars.projectStartDate}}</span></div>
+                            <input type="date" formControlName="projectStartDate" id="startDate" class="form-control"
+                                placeholder="startDate***" >
+                            <div *ngIf="vars.projectStartDate" class="dangerSms"><span>{{vars.projectStartDate}}</span>
+                            </div>
                         </div>
                         <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
                             <label for="leadByEmployee" class="form-label">Lead By Employee</label><br>
-                            <select id="leadByEmployee" class="form-control"
-                                formControlName="projectEmployeeLead">
+                            <select id="leadByEmployee" class="form-control" formControlName="projectEmployeeLead">
                                 <option value="">Select Employee </option>
                                 <ng-container *ngIf="vars.employeeData.length > 0; else noEmployees">
                                     <option *ngFor="let category of vars.employeeData;" [value]="category.id">
@@ -89,7 +102,8 @@
                                     <option disabled>No Empoyee available</option>
                                 </ng-template>
                             </select>
-                            <div *ngIf="vars.projectEmployeeLead" class="dangerSms"><span>{{vars.projectEmployeeLead}}</span></div>
+                            <div *ngIf="vars.projectEmployeeLead" class="dangerSms">
+                                <span>{{vars.projectEmployeeLead}}</span></div>
                         </div>
                     </div>
 
@@ -97,21 +111,21 @@
                         <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
                             <label for="contactPerson" class="form-label"> Contact Person </label><br>
                             <input type="text" formControlName="projectContactPerson" id="contactPerson"
-                                class="form-control"
-                                placeholder="Enter Contact Person">
-                            <div *ngIf="vars.projectContactPerson" class="dangerSms"><span>{{vars.projectContactPerson}}</span></div>
+                                class="form-control" placeholder="Enter Contact Person">
+                            <div *ngIf="vars.projectContactPerson" class="dangerSms">
+                                <span>{{vars.projectContactPerson}}</span></div>
                         </div>
                         <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
                             <label for="contactNo" class="form-label"> Contact No </label><br>
-                            <input type="text" formControlName="projectContactNo" id="contactNo"
-                                class="form-control"
+                            <input type="text" formControlName="projectContactNo" id="contactNo" class="form-control"
                                 placeholder="Enter Contact No">
-                            <div *ngIf="vars.projectContactNo" class="dangerSms"><span>{{vars.projectContactNo}}</span></div>
+                            <div *ngIf="vars.projectContactNo" class="dangerSms"><span>{{vars.projectContactNo}}</span>
+                            </div>
                         </div>
                     </div>
                     <div class="row m-2">
                         <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
-                                <button type="submit" class="themeBtn"  >{{vars.submit!}}</button>
+                            <button type="submit" class="themeBtn">{{vars.submit!}}</button>
                         </div>
                     </div>
                 </form>
