@@ -60,14 +60,25 @@ export class MasterService {
 
     return this.http.post(this.env.apiUrl + '/updateProject', data, { headers });
   }
-  deleteproject(id:any){
+  deleteproject(id: any) {
     const headers = this.getToken();
-     return this.http.get(this.env.apiUrl + `/deleteProject/${id}`, { headers });
+    return this.http.get(this.env.apiUrl + `/deleteProject/${id}`, { headers });
   }
 
-  getProject(){
+  getProject() {
     const headers = this.getToken();
 
     return this.http.get(this.env.apiUrl + '/projectList', { headers });
   }
+  saveProjectEmployee(data: {id?:number, employeeId:number, projectId: number, assignDate: Date, role:string}) {
+     const headers = this.getToken();
+     console.log(data);
+    return this.http.post(this.env.apiUrl + '/projectEmployeeList', data ,{ headers });
+  }
+  getProjectEmployeeList() {
+     const headers = this.getToken();
+    return this.http.get(this.env.apiUrl + '/projectEmployeeList' ,{ headers });
+  }
+
+
 }

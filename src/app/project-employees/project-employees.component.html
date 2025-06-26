@@ -1,1 +1,124 @@
-<p>project-employees works!</p>
+<div class="row main">
+    <div [class]=" isAddModalSingal() ? 'col-sm-12 col-md-12 col-lg-6' : 'col-sm-12 col-md-12 col-lg-10 mx-auto' ">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-6">
+                        <strong>Employee Portal</strong>
+                    </div>
+                    <div class="col-6 text-end">
+                        <button class="btn btn-warning" (click)="openModal()">Add New</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+
+                    <table class="table ">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Project</th>
+                                <th>Employee</th>
+                                <th>Assign Date</th>
+                                <th>Role</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of vars.allProjectEmployeeProjectList">
+                                <td> {{ item['id'] }}</td>
+                                <td>{{ item['project']['name'] || "No record" }} <span class="project_id d-none">{{  item['project']['id'] || ''  }}</span></td>
+                                <td>{{ item["user"]['name'] || "No record" }} <span class="employee_id d-none">{{  item["user"]['id'] || ''  }}</span></td>
+                                <td>{{ item['assigndate'] }}</td>
+                                <td>{{ item['role'] }}</td>
+                                <td>
+                                     <div>
+                                        <button class="cross m-1" (click)="onDelete(item['id'])">x</button>
+                                        <button class="edit" (click)="onEdit(item['id'])">✎</button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if(isAddModalSingal()){
+
+    <div class="col-sm-12 col-md-12 col-lg-5 modalMainDiv">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-6">
+                        <strong>New Employee</strong>
+                    </div>
+                    <div class="col-6 text-end">
+                        <button class="btn btn-primary" (click)="closeModal()">Close</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <form class="mb-4" [formGroup]="projectEmployeeForm" (ngSubmit)="onSubmit()">
+                    <div class="danger" *ngIf="vars.general"><span>{{vars.general}}</span></div>
+                    <div class="success" *ngIf="vars.success"><span>{{vars.success}}</span></div>
+                    <div class="row m-2">
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                            <label for="projectId" class="form-label">Project Id</label><br>
+                            <select name="name" id="projectId" formControlName="projectId" class="form-control">
+                                <option disabled selected>Select</option>
+                                <option *ngFor="let project of allProjectList" [value]="project.id">
+                                    {{ project.name }} ( Client: {{ project.client }})
+                                </option>
+                            </select>
+                            <div *ngIf="vars.projectIdError" class="dangerSms"><span>{{vars.projectIdError}}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                            <label for="employeeId" class="form-label">Employee Id</label><br>
+                            <select name="email" id="employeeId" formControlName="employeeId" class="form-control">
+                                <option disabled selected>Select</option>
+                                <option *ngFor="let employee of allEmployeeList" [value]="employee.id">
+                                    {{ employee.name }} (Role: {{ getRoleForEmployee(employee) }})
+                                </option>
+                            </select>
+                            <div *ngIf="vars.employeeIdError" class="dangerSms"><span>{{ vars.employeeIdError }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row  m-2">
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                            <label for="assignDate" class="form-label"> Assign Date </label><br>
+                            <input type="date" name="assignDate" id="assignDate" formControlName="assignDate"
+                                class="form-control">
+                            <div class="dangerSms" *ngIf="vars.assignDateError"><span>{{ vars.assignDateError }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                            <label for="role" class="form-label">Role</label><br>
+                            <input type="text" name="role" id="role" formControlName="role" class="form-control"
+                                placeholder="Enter Employee Role">
+                            <div class="dangerSms" *ngIf="vars.roleError"><span>{{vars.roleError}}</span></div>
+                        </div>
+                    </div>
+
+
+                    <div class="row m-2">
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+
+                            <button type="submit" class="themeBtn">{{vars.submit!}}</button>
+
+                            <!-- <button type="button" class="themeBtn" (click)="onUpate()" >{{vars.update!}}</button> -->
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+    }
+</div>

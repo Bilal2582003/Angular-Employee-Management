@@ -4,6 +4,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EmployeeComponent } from './employee/employee.component';
 import { ProjectComponent } from './project/project.component';
+import { ProjectEmployeesComponent } from './project-employees/project-employees.component';
 
 export const routes: Routes = [
  {
@@ -30,6 +31,10 @@ export const routes: Routes = [
         {
             path:"project",
             component: ProjectComponent
+        },
+        {
+            path:"project-employee",
+            component: ProjectEmployeesComponent
         },
     ]
  },

@@ -1,0 +1,86 @@
+.card-header{
+    background:  var(--lightblue);
+}
+.card-body{
+     background: linear-gradient(to bottom, var(--lightgray), var(--lightpurple));
+}
+.danger{
+     color:red;
+     text-align: center;
+     margin: auto;
+     font-weight: bold;
+     font-size: small;
+     background-color:white;
+     color:red;
+     border-radius: 8px;
+     max-width: 70%;
+     min-width: min-content;
+}
+.dangerSms{
+color:red;
+     text-align: center;
+     margin: auto;
+     font-weight: bold;
+     font-size: small;
+}
+.invalid{
+     border: 1px solid red;
+}
+.success{
+     text-align: center;
+     margin: auto;
+     font-weight: bold;
+     font-size: small;
+     background-color:white;
+     color:green;
+     border-radius: 8px;
+     max-width: 70%;
+     min-width: min-content;
+}
+.cross, .edit{
+     color: black;
+     font-size: medium;
+     font-weight: bolder;
+     border: none;
+     border-radius: 3px;
+     background-color: white;
+     border: .1px solid gray;
+     height: fit-content;
+}
+.cross:hover{
+     border: 1px solid red;
+     color: red;
+     background-color: whtie;
+     transition: .2s ease-in;
+}
+.edit:hover{
+     border: 1px solid gold;
+     color: gold;
+     background-color: whtie;
+     transition: .2s ease-in;
+}
+div:has(> .cross){
+display: flex;
+justify-content: center;
+align-items: center;
+}
+table > thead > tr, th{
+      background: linear-gradient( var(--blue));
+      color: white;
+}
+
+td {
+    background-color: transparent; /* More reliable than unset */
+}
+table > thead > tr:nth-child(even),
+table > tbody > tr:nth-child(even) {
+    background:  var(--lightpurple);
+    border: none;
+    outline: none;
+    
+    border-radius: 3px;
+}
+.table > :not(caption) > * > * {
+     border-bottom-width: 0px;
+}
+@media (max-width: 992px) { .modalMainDiv { margin-top: 30px; } }
