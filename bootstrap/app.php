@@ -23,6 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
         'api/EmpoyeeManagemet/updateEmployee',
         'api/EmpoyeeManagemet/createProject',
         'api/EmpoyeeManagemet/updateProject',
+        'api/EmpoyeeManagemet/projectEmployeeList',
     ]); 
     })
     ->withExceptions(function (Exceptions $exceptions) {
