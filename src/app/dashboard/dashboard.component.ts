@@ -16,7 +16,8 @@ export class DashboardComponent implements OnInit {
     totalForShow: 0
   }
   employee: any = {
-    total: 0
+    total: 0,
+    totalForShow: 0
   }
   masterSevice = inject(MasterService);
 
@@ -32,6 +33,9 @@ export class DashboardComponent implements OnInit {
         } else {
           this.project.TypeList = [];
         }
+
+        this.employee.total = res.employeeCount
+        this.employee.totalForShow = res.employeeCount
       }
     })
   }
