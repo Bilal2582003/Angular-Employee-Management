@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\dashboard;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectEmployeeController;
@@ -31,5 +32,11 @@ Route::prefix("EmpoyeeManagemet")->group(function () {
     
     Route::post("projectEmployeeList", [ProjectEmployeeController::class, "crateProjectEmployee"])->middleware(["auth:sanctum"]);
     Route::get("projectEmployeeList", [ProjectEmployeeController::class, "ProjectEmployeeList"])->middleware(["auth:sanctum"]);
+    Route::get("projectEmployeeList/{id}", [ProjectEmployeeController::class, "ProjectEmployeeById"])->middleware(["auth:sanctum"]);
+    Route::post("projectEmployeeList/update", [ProjectEmployeeController::class, "updateProjectEmployee"])->middleware(["auth:sanctum"]);
+    Route::get("projectEmployeeList/delete/{id}", [ProjectEmployeeController::class, "deleteProjectEmployee"])->middleware(["auth:sanctum"]);
+
+
+    Route::get("dashboard", [dashboard::class, "getDashboard"])->middleware(["auth:sanctum"]);
     Route::post("login", [UserController::class, "login"])->name("login");
 });

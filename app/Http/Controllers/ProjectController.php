@@ -18,7 +18,8 @@ class ProjectController extends Controller
                 "projectStartDate" => "required|date",
                 "projectEmployeeLead" => "required",
                 "projectContactPerson" => "required",
-                "projectContactNo" => "required"
+                "projectContactNo" => "required",
+                "projectStatus" => "required"
             ]);
             if ($validate->fails()) {
                 return response()->json(["status" => 400, "message" => $validate->errors()], 400);
@@ -31,6 +32,7 @@ class ProjectController extends Controller
             $project->employeeLeadId = $req->projectEmployeeLead;
             $project->contactPerson = $req->projectContactPerson;
             $project->contactNo = $req->projectContactNo;
+            $project->projectStatus = $req->projectStatus;
             $project->save();
             if ($project->id) {
                 return response()->json([
@@ -62,7 +64,8 @@ class ProjectController extends Controller
                 "projectStartDate" => "required|date",
                 "projectEmployeeLead" => "required",
                 "projectContactPerson" => "required",
-                "projectContactNo" => "required"
+                "projectContactNo" => "required",
+                "projectStatus" => "required",
             ]);
             if ($validate->fails()) {
                 return response()->json(["status" => 400, "message" => $validate->errors()], 400);
@@ -75,6 +78,7 @@ class ProjectController extends Controller
             $project->employeeLeadId = $req->projectEmployeeLead;
             $project->contactPerson = $req->projectContactPerson;
             $project->contactNo = $req->projectContactNo;
+            $project->projectStatus = $req->projectStatus;
             $project->save();
             if ($project->id) {
                 return response()->json([

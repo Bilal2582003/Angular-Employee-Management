@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger("employeeLeadId");
             $table->string("contactPerson", 200);
             $table->string("contactNo", 50);
+            $table->string("projectStatus", 200);
             $table->foreign("employeeLeadId")->references("id")->on("users")->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
