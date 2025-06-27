@@ -24,6 +24,7 @@
                                 <th>Contact Person </th>
                                 <th>Contact# </th>
                                 <th>StartDate </th>
+                                <th>Status </th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -36,9 +37,10 @@
                                 <td>{{ item.contactPerson }}</td>
                                 <td>{{ item.contactNo }}</td>
                                 <td>{{ item.startDate | date:'dd-MM-yy' }}</td>
+                                <td>{{ item.projectStatus }}</td>
                                 <td>
                                     <div>
-                                        <button class="cross m-1" (click)="onDelete(item.id)">x</button>
+                                        <button class="cross m-1" (click)="onDelete(item.id)">❌</button>
                                         <button class="edit" (click)="onEdit(item.id)">✎</button>
                                     </div>
                                 </td>
@@ -121,6 +123,15 @@
                                 placeholder="Enter Contact No">
                             <div *ngIf="vars.projectContactNo" class="dangerSms"><span>{{vars.projectContactNo}}</span>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row m-2">
+                        <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                            <label for="Status" class="form-label"> Status </label><br>
+                            <input type="text" formControlName="projectStatus" id="Status"
+                                class="form-control" placeholder="Enter Status">
+                            <div *ngIf="vars.projectStatus" class="dangerSms">
+                                <span>{{vars.projectStatus}}</span></div>
                         </div>
                     </div>
                     <div class="row m-2">

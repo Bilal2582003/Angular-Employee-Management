@@ -64,21 +64,35 @@ export class MasterService {
     const headers = this.getToken();
     return this.http.get(this.env.apiUrl + `/deleteProject/${id}`, { headers });
   }
-
+  
   getProject() {
     const headers = this.getToken();
-
+    
     return this.http.get(this.env.apiUrl + '/projectList', { headers });
   }
   saveProjectEmployee(data: {id?:number, employeeId:number, projectId: number, assignDate: Date, role:string}) {
      const headers = this.getToken();
      console.log(data);
-    return this.http.post(this.env.apiUrl + '/projectEmployeeList', data ,{ headers });
+     const addUrl = (data.id != 0 && data.id != null) ? '/projectEmployeeList/update' : '/projectEmployeeList'; 
+    return this.http.post(this.env.apiUrl + addUrl, data ,{ headers });
   }
   getProjectEmployeeList() {
-     const headers = this.getToken();
+    const headers = this.getToken();
     return this.http.get(this.env.apiUrl + '/projectEmployeeList' ,{ headers });
   }
+  getProjectEmployeeById(id:any) {
+     const headers = this.getToken();
+     return this.http.get(this.env.apiUrl + '/projectEmployeeList/'+id ,{ headers });
+    }
+    
+    deleteEmployeeProject(id: any) {
+      const headers = this.getToken();
+      return this.http.get(this.env.apiUrl + `/projectEmployeeList/delete/${id}`, { headers });
+    }
 
-
+    getDashboard(){
+      const headers = this.getToken();
+      return this.http.get(this.env.apiUrl + `/dashboard`, { headers });
+    }
+    
 }

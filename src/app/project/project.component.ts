@@ -24,7 +24,8 @@ export class ProjectComponent implements OnInit {
     projectContactPerson: '',
     projectContactNo: '',
     projectList: [],
-    projectId: 0
+    projectId: 0,
+    projectStatus: "",
   };
 
   masterService = inject(MasterService);
@@ -55,6 +56,7 @@ export class ProjectComponent implements OnInit {
       projectEmployeeLead: new FormControl(""),
       projectContactPerson: new FormControl(""),
       projectContactNo: new FormControl(""),
+      projectStatus: new FormControl(""),
     })
   }
 
@@ -83,6 +85,7 @@ export class ProjectComponent implements OnInit {
         this.vars.projectEmployeeLead = ""
         this.vars.projectContactPerson = ""
         this.vars.projectContactNo = ""
+        this.vars.projectStatus = ""
         this.vars.submit = "Submit"
         this.showTemporaryMessageSuccess(res.message)
         this.getProjectData();
@@ -103,6 +106,7 @@ export class ProjectComponent implements OnInit {
             this.vars.projectEmployeeLead = error.projectEmployeeLead ? error.projectEmployeeLead[0] : "";
             this.vars.projectContactPerson = error.projectContactPerson ? error.projectContactPerson[0] : "";
             this.vars.projectContactNo = error.projectContactNo ? error.projectContactNo[0] : "";
+            this.vars.projectStatus = error.projectStatus ? error.projectStatus[0] : "";
           }
         } else if (err.status == 500) {
           console.log("this" + JSON.stringify(err))
@@ -140,6 +144,7 @@ export class ProjectComponent implements OnInit {
       projectEmployeeLead: new FormControl(match.employeeLeadId),
       projectContactPerson: new FormControl(match.contactPerson),
       projectContactNo: new FormControl(match.contactNo),
+      projectStatus: new FormControl(match.projectStatus),
     })
   }
   onDelete(id: any) {

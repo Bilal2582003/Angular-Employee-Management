@@ -78,13 +78,13 @@ export class ProjectEmployeesComponent implements OnInit {
      this.initializeForm();
   }
 
-  initializeForm() {
+  initializeForm(data:any = {id:0, employeeId: "", projectId: "", assignDate: "", role: ""}) {
     this.projectEmployeeForm = new FormGroup({
-      id: new FormControl(0),
-      employeeId: new FormControl(""),
-      projectId: new FormControl(""),
-      assignDate: new FormControl(""),
-      role: new FormControl("")
+      id: new FormControl(data.id),
+      employeeId: new FormControl(data.employeeId),
+      projectId: new FormControl(data.projectId),
+      assignDate: new FormControl(data.assignDate),
+      role: new FormControl(data.role)
     })
   }
 
@@ -103,7 +103,8 @@ export class ProjectEmployeesComponent implements OnInit {
         this.vars.roleError = "";
         this.vars.submit = "Submit"
 
-        this.showTemporaryMessageSuccess("Project Assigned Successfully.");
+        this.showTemporaryMessageSuccess(res.message);
+        this.ProjectEmployeeList();
       },
       error: (err:any) => {
         // console.log(err)
@@ -133,21 +134,34 @@ export class ProjectEmployeesComponent implements OnInit {
   }
 
   ProjectEmployeeList(){
+    this.initializeForm({id:0, employeeId: "", projectId: "", assignDate: "", role: ""})
    this.masterServie.getProjectEmployeeList().subscribe((res:any)=>{
     console.log(res)
     if(res.status == 200){
      this.vars.allProjectEmployeeProjectList = res.data
      console.log(this.vars.allProjectEmployeeProjectList)
-    }else{
-
     }
    })
   }
 
   onDelete(id:any){
-
+    console.log(id)
+    this.masterServie.deleteEmployeeProject(id).subscribe((res:any)=>{
+      console.log(res)
+      alert(res.status == 200 ? res.message : res.error.message )
+      this.ProjectEmployeeList();
+    })
   }
   onEdit(id:any){
+    console.log(id)
+    this.masterServie.getProjectEmployeeById(id).subscribe((res:any)=>{
+      console.log(res)
+      if(res.status == 200){
+        this.initializeForm({id:id, employeeId: res.data.employeeId, projectId: res.data.projectId, assignDate: res.data.assigndate, role: res.data.role})
+        this.vars.submit = "Update";
+        this.openModal();
+      }
+    })
 
   }
 
